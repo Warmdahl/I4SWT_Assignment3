@@ -65,6 +65,7 @@
     <Compile Include="CookControllerTest.cs" />
     <Compile Include="DisplayTest.cs" />
     <Compile Include="DoorTest.cs" />
+    <Compile Include="FullIntegrationTest.cs" />
     <Compile Include="LightTest.cs" />
     <Compile Include="PowerTubeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

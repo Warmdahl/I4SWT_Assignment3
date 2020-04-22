@@ -1,4 +1,7 @@
-﻿using MicrowaveOvenClasses.Boundary;
+﻿using System;
+using System.IO;
+using System.Net.Security;
+using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
@@ -6,7 +9,7 @@ using NUnit.Framework;
 
 namespace Microwave.Test.Unit
 {
-    public class ConcreteUITest
+    public class FullIntegrationTest
     {
         private Button powerButton;
         private Button timeButton;
@@ -20,16 +23,16 @@ namespace Microwave.Test.Unit
         private CookController cookController;
         private Light light;
 
-        private IOutput output;
-        private IPowerTube powerTube;
-        private ITimer timer;
+        private Output output;
+        private PowerTube powerTube;
+        private Timer timer;
 
         [SetUp]
         public void Setup()
         {
-            output = Substitute.For<IOutput>();
-            powerTube = Substitute.For<IPowerTube>();
-            timer = Substitute.For<ITimer>();
+            output = new Output();
+            powerTube = new PowerTube(output);
+            timer = new Timer();
             powerButton = new Button();
             timeButton = new Button();
             startCancelButton = new Button();
@@ -42,14 +45,20 @@ namespace Microwave.Test.Unit
             
             ui = new UserInterface(powerButton, timeButton, startCancelButton, door, display, light, cookController);
         }
-
+        
         [Test]
         public void Ready_DoorOpen_LightOn()
         {
             // This test that uut has subscribed to door opened, and works correctly
             // simulating the event through NSubstitute
-            door.Open();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                door.Open();
+                string exp = string.Format($"Light is turned on{Environment.NewLine}");
+                Assert.AreEqual(exp, sw.ToString());
+            }
+
         }
 
         [Test]
@@ -57,12 +66,18 @@ namespace Microwave.Test.Unit
         {
             // This test that uut has subscribed to door opened and closed, and works correctly
             // simulating the event through NSubstitute
-            door.Open();
-            door.Close();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                door.Open();
+                door.Close();
+                string exp = string.Format($"Light is turned off{Environment.NewLine}");
+                Assert.AreEqual(exp, sw.ToString());
+            }
         }
 
-        [Test]
+        //Testene herunder skal laves om så de passer til dette system
+        /*[Test]
         public void Ready_DoorOpenClose_Ready_PowerIs50()
         {
             // This test that uut has subscribed to power button, and works correctly
@@ -349,6 +364,6 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
 
             output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
-        }
+        }*/
     }
 }
