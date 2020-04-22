@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonDoorUITest.cs" />
     <Compile Include="ButtonTest.cs" />
+    <Compile Include="ConcreteUITest.cs" />
     <Compile Include="CookControllerTest.cs" />
     <Compile Include="DisplayTest.cs" />
     <Compile Include="DoorTest.cs" />
