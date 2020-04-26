@@ -77,37 +77,57 @@ namespace Microwave.Test.Unit
         }
 
         //Testene herunder skal laves om så de passer til dette system
-        /*[Test]
+        [Test]
         public void Ready_DoorOpenClose_Ready_PowerIs50()
         {
             // This test that uut has subscribed to power button, and works correctly
             // simulating the events through NSubstitute
             door.Open();
             door.Close();
-            powerButton.Press();
-            
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display shows: 50 W")));
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                powerButton.Press();
+                string exp = string.Format($"Display shows: 50 W{Environment.NewLine}");
+                Assert.AreEqual(exp, sw.ToString());
+            }
         }
 
         [Test]
         public void Ready_2PowerButton_PowerIs100()
         {
             powerButton.Press();
-            powerButton.Press();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display shows: 100 W")));
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                powerButton.Press();
+                
+                string exp = string.Format($"Display shows: 100 W{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
         public void Ready_14PowerButton_PowerIs700()
         {
-            for (int i = 1; i <= 14; i++)
+            
+
+            using (StringWriter sw = new StringWriter())
             {
-                powerButton.Press();
+                Console.SetOut(sw);
+                for (int i = 1; i <= 14; i++)
+                {
+                    powerButton.Press();
+                }
+
+                string exp = string.Format($"Display shows: 700 W{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
             }
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display shows: 700 W")));
         }
 
-        [Test]
+        /*[Test]
         public void Ready_15PowerButton_PowerIs50Again()
         {
             for (int i = 1; i <= 15; i++)
@@ -196,10 +216,16 @@ namespace Microwave.Test.Unit
             // Now in SetPower
             timeButton.Press();
             // Now in SetTime
-            startCancelButton.Press();
+            
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                startCancelButton.Press();
 
-            timer.Received().Start(60);
-        }
+                string exp = string.Format($"Display shows: 01:00{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
+        }*/
 
        [Test]
         public void SetTime_DoorOpened_DisplayCleared()
@@ -208,9 +234,15 @@ namespace Microwave.Test.Unit
             // Now in SetPower
             timeButton.Press();
             // Now in SetTime
-            door.Open();
+            
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                door.Open();
 
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
+                string exp = string.Format($"Display cleared{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -220,9 +252,15 @@ namespace Microwave.Test.Unit
             // Now in SetPower
             timeButton.Press();
             // Now in SetTime
-            door.Open();
+            
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                door.Open();
 
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+                string exp = string.Format($"Light is turned on{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -235,13 +273,18 @@ namespace Microwave.Test.Unit
             timeButton.Press();
             // Now in SetTime
 
-            // Should call with correct values
-            startCancelButton.Press();
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Should call with correct values
+                startCancelButton.Press();
 
-            powerTube.Received(1).TurnOn(100);
+                string exp = string.Format($"PowerTube works with 100{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
         
-        [Test]
+        /*[Test]
         public void Ready_PowerAndTime_Timer()
         {
             powerButton.Press();
@@ -255,7 +298,7 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
 
             timer.Received(1).Start(120);
-        }
+        }*/
 
         [Test]
         public void Ready_FullPower_CookerIsCalledCorrectly()
@@ -268,11 +311,15 @@ namespace Microwave.Test.Unit
             timeButton.Press();
             // Now in SetTime
 
-            // Should call with correct values
-            startCancelButton.Press();
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Should call with correct values
+                startCancelButton.Press();
 
-            powerTube.Received(1).TurnOn(700);
-
+                string exp = string.Format($"PowerTube works with 700{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
 
@@ -283,10 +330,16 @@ namespace Microwave.Test.Unit
             // Now in SetPower
             timeButton.Press();
             // Now in SetTime
-            startCancelButton.Press();
-            // Now cooking
+            
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                startCancelButton.Press();
+                // Now cooking
 
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+                string exp = string.Format($"Light is turned on{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -299,8 +352,15 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
             // Now in cooking
 
-            ui.CookingIsDone();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Cooking is done
+                ui.CookingIsDone();
+
+                string exp = string.Format($"Light is turned off{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -313,9 +373,15 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
             // Now in cooking
 
-            // Cooking is done
-            ui.CookingIsDone();
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Cooking is done
+                ui.CookingIsDone();
+
+                string exp = string.Format($"Display cleared{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -328,10 +394,15 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
             // Now in cooking
 
-            // Open door
-            door.Open();
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Open door
+                door.Open();
 
-            powerTube.Received().TurnOff();
+                string exp = string.Format($"PowerTube turned off{Environment.NewLine}");
+                Assert.AreEqual(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -344,10 +415,15 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
             // Now in cooking
 
-            // Open door
-            startCancelButton.Press();
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Open door
+                startCancelButton.Press();
 
-            powerTube.Received().TurnOff();
+                string exp = string.Format($"PowerTube turned off{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
@@ -360,10 +436,15 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
             // Now in cooking
 
-            // Open door
-            startCancelButton.Press();
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                // Open door
+                startCancelButton.Press();
 
-            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
-        }*/
+                string exp = string.Format($"Light is turned off{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
+        }
     }
 }
