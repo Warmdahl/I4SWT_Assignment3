@@ -1,4 +1,6 @@
 ﻿using System.Threading;
+using MicrowaveOvenClasses.Boundary;
+using MicrowaveOvenClasses.Interfaces;
 using NUnit.Framework;
 using Timer = MicrowaveOvenClasses.Boundary.Timer;
 

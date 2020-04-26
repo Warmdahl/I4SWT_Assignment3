@@ -39,6 +39,10 @@ namespace Microwave.Application
 
             powerButton.Press();
 
+            powerButton.Press();
+
+            timeButton.Press();
+            
             timeButton.Press();
 
             startCancelButton.Press();

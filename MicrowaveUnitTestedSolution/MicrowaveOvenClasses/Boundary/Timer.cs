@@ -7,6 +7,7 @@ namespace MicrowaveOvenClasses.Boundary
     {
         public int TimeRemaining { get; private set; }
 
+        
         public event EventHandler Expired;
         public event EventHandler TimerTick;
 
@@ -43,7 +44,8 @@ namespace MicrowaveOvenClasses.Boundary
         {
             // One tick has passed
             // Do what I should
-            TimeRemaining -= 1000;
+            
+            TimeRemaining -= 1;
             TimerTick?.Invoke(this, EventArgs.Empty);
 
             if (TimeRemaining <= 0)
