@@ -50,7 +50,7 @@ namespace Microwave.Test.Unit
             uut.Start(2000);
 
             // wait for expiration, but not much longer, should come
-            Assert.That(pause.WaitOne(2100));
+            Assert.That(!pause.WaitOne(2100));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Microwave.Test.Unit
             uut.Start(2000);
 
             // wait longer than expiration
-            Assert.That(pause.WaitOne(2100));
+            Assert.That(!pause.WaitOne(2100));
 
             Assert.That(notifications, Is.EqualTo(2));
         }
