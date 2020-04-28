@@ -131,7 +131,7 @@ namespace Microwave.Test.Unit
             }
         }
 
-        /*[Test]
+        [Test]
         public void Ready_15PowerButton_PowerIs50Again()
         {
             for (int i = 1; i <= 14; i++)
@@ -283,29 +283,53 @@ namespace Microwave.Test.Unit
             
         }
         
-        [Test]
-        public void SetTime_StartButton_Timer_60_seconds()
+        [Test, MaxTime(2020)]
+        public void SetTime_StartButton_Timer_2_S_Less_Than_2_02_S()
         {
+            string exp = string.Format($"00:58");
             powerButton.Press();
-            // Now in SetPower
-            
-            // Now in SetTime
+
+
+            timeButton.Press();
             
 
             using (StringWriter sw = new StringWriter())
             {
                 Console.SetOut(sw);
-                timeButton.Press();
-                startCancelButton.Press();
                 
-                string exp = string.Format($"Display shows: 00:59{Environment.NewLine}");
-                StringAssert.Contains(exp, sw.ToString());
+                startCancelButton.Press();
+                while (!sw.ToString().Contains(exp))
+                {
+                    
+                }
             };
             
-            //timer.Received().Start(60);
+            
+        }
+        
+        [Test, MaxTime(60500)]
+        public void SetTime_StartButton_Timer_1_M_Less_Than_61_S()
+        {
+            string exp = string.Format($"00:01");
+            powerButton.Press();
+
+
+            timeButton.Press();
+            
+
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                
+                startCancelButton.Press();
+                while (!sw.ToString().Contains(exp))
+                {
+                    
+                }
+            };
         }
 
-       /*[Test]
+       [Test]
         public void SetTime_DoorOpened_DisplayCleared()
         {
             powerButton.Press();
@@ -362,7 +386,7 @@ namespace Microwave.Test.Unit
             }
         }
         
-        /*[Test]
+        [Test]
         public void Ready_PowerAndTime_Timer()
         {
             powerButton.Press();
@@ -376,7 +400,7 @@ namespace Microwave.Test.Unit
             startCancelButton.Press();
 
             timer.Received(1).Start(120);
-        }*/
+        }
 
         [Test]
         public void Ready_FullPower_CookerIsCalledCorrectly()
