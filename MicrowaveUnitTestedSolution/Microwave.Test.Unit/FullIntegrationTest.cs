@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Net.Security;
+using System.Threading;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Unit
 {
@@ -283,50 +285,40 @@ namespace Microwave.Test.Unit
             
         }
         
-        [Test, MaxTime(2020)]
-        public void SetTime_StartButton_Timer_2_S_Less_Than_2_02_S()
+        [Test]
+        public void SetTime_StartButton_Timer_2_m_less_than_121_s()
         {
-            string exp = string.Format($"00:58");
+            
+            ManualResetEvent pause = new ManualResetEvent(false);
             powerButton.Press();
 
 
+            timer.Expired += (sender, args) => pause.Set();
             timeButton.Press();
-            
+            timeButton.Press();
 
-            using (StringWriter sw = new StringWriter())
-            {
-                Console.SetOut(sw);
+            
                 
-                startCancelButton.Press();
-                while (!sw.ToString().Contains(exp))
-                {
-                    
-                }
-            };
+            startCancelButton.Press();
+            Assert.That(!pause.WaitOne(121000));
             
             
         }
         
-        [Test, MaxTime(60500)]
+        [Test]
         public void SetTime_StartButton_Timer_1_M_Less_Than_61_S()
         {
-            string exp = string.Format($"00:01");
+            ManualResetEvent pause = new ManualResetEvent(false);
             powerButton.Press();
 
 
+            timer.Expired += (sender, args) => pause.Set();
             timeButton.Press();
             
-
-            using (StringWriter sw = new StringWriter())
-            {
-                Console.SetOut(sw);
+            startCancelButton.Press();
                 
-                startCancelButton.Press();
-                while (!sw.ToString().Contains(exp))
-                {
-                    
-                }
-            };
+            Assert.That(!pause.WaitOne(61000));
+            
         }
 
        [Test]
