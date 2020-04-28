@@ -394,12 +394,20 @@ namespace Microwave.Test.Unit
 
             timeButton.Press();
             // Now in SetTime
-            timeButton.Press();
+            
+            //timer.Received(1).Start(120);
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
 
-            // Should call with correct values
-            startCancelButton.Press();
+                timeButton.Press();
 
-            timer.Received(1).Start(120);
+                // Should call with correct values
+                startCancelButton.Press();
+
+                string exp = string.Format($"Display shows: 02:00{Environment.NewLine}");
+                StringAssert.Contains(exp, sw.ToString());
+            }
         }
 
         [Test]
