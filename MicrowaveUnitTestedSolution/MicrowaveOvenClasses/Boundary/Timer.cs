@@ -45,6 +45,7 @@ namespace MicrowaveOvenClasses.Boundary
             // One tick has passed
             // Do what I should
             
+            //tiden ændret til 1 sekund.
             TimeRemaining -= 1;
             TimerTick?.Invoke(this, EventArgs.Empty);
 
