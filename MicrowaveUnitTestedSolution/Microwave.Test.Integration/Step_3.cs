@@ -124,12 +124,11 @@ namespace Microwave.Test.Unit
             {
                 Console.SetOut(sw);
 
-                for (int i = 1; i <= 13; i++)
+                for (int i = 1; i <= 14; i++)
                 {
                     powerButton.Press();
                 }
-
-                powerButton.Press();
+                
                 
                 string exp = string.Format($"Display shows: 700 W{Environment.NewLine}");
                 StringAssert.Contains(exp, sw.ToString());
@@ -143,13 +142,11 @@ namespace Microwave.Test.Unit
             {
                 Console.SetOut(sw);
 
-                for (int i = 1; i <= 14; i++)
+                for (int i = 1; i <= 15; i++)
                 {
                     powerButton.Press();
                 }
-                // And then once more
-
-                powerButton.Press();
+                
                 
                 string exp = string.Format($"Display shows: 50 W{Environment.NewLine}");
                 StringAssert.Contains(exp, sw.ToString());
@@ -175,7 +172,7 @@ namespace Microwave.Test.Unit
            
         }
 
-        //Denne test skal kigges på
+        
         [Test]
         public void SetPower_DoorOpened_DisplayCleared()
         {
